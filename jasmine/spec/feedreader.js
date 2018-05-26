@@ -103,7 +103,24 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+        let initContent;
 
+        beforeEach(function(done) {
+            // load feed 0 and save content (url of first child)
+            loadFeed(0, function(){
+                initContent = $('.feed').children()[0].href;
+                // load feed 1 before moving to the test
+                loadFeed(1, function(){
+                    done();
+                })
+            })
+        });
+
+        it('loadFeed function changes content', function(done) {
+            // test if content from feed 1 is not equal to content from feed 0 
+            expect($('.feed').children()[0].href).not.toBe(initContent);
+            done();
+        });
     });
 
 }());
